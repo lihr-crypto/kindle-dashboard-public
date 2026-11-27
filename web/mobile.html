@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="工作台"><title>日常工作台</title><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg"><link rel="apple-touch-icon" href="/icon-180.png"><link rel="stylesheet" href="/mobile.css"></head>
+<body><main>
+<header class="masthead"><a href="/mobile" class="brand">日常工作台</a><span id="header-date"></span></header>
+<p id="connection" class="connection" role="status" aria-live="polite">正在连接…</p>
+<section id="login" hidden><h1>打开你的工作台</h1><p>使用电脑管理页提供的手机管理密钥。</p><form id="login-form"><label>管理密钥<input id="login-token" type="password" autocomplete="current-password" required></label><button>登录</button></form></section>
+<div id="app" hidden>
+<p id="demo-note" class="ink-note" hidden>排版示例 · 天气、待办与额度为固定数据</p>
+<section id="today-page" data-view="today">
+<div class="clock-moon"><div><div id="clock" class="clock"></div><p id="city"></p></div><div class="moon-block"><svg id="moon" viewBox="0 0 100 100" role="img" aria-label="月相"></svg><p id="moon-name"></p><small id="moon-light"></small></div></div>
+<div class="section-title"><h2>天气</h2><span id="weather-status"></span></div>
+<div class="weather-main"><strong id="temperature"></strong><div><b id="weather-name"></b><p id="high-low"></p></div></div>
+<dl class="weather-detail"><div><dt>湿度</dt><dd id="humidity"></dd></div><div><dt>体感</dt><dd id="feels-like"></dd></div><div><dt>风</dt><dd id="wind"></dd></div><div><dt>日落</dt><dd id="sunset"></dd></div></dl>
+<svg id="weather-chart" viewBox="0 0 360 142" role="img" aria-label="未来温度折线与降雨概率柱状图"></svg><p class="chart-key">Open-Meteo · 温度 °C · 降雨概率 % · 每两小时</p><p id="weather-advice" class="ink-note"></p>
+<div class="section-title"><h2>今日</h2><span id="lunar"></span></div>
+<div class="calendar-moon"><div id="month-calendar" class="month-calendar"></div><div class="moon-facts"><p id="moon-rise"></p><p id="moon-set"></p><p id="full-moon"></p><p id="solar-term"></p></div></div>
+<p class="small muted">月历上的圆点表示该日有工作台待办。</p><div id="today-agenda"></div>
+<div class="section-title"><h2>今年</h2><span id="year-progress-label"></span></div><p class="year-remaining">还剩 <b id="year-days"></b> 天</p><div id="year-progress" class="progress" role="progressbar" aria-label="年度已过比例"><span></span></div>
+</section>
+<section id="work-page" data-view="work" hidden>
+<div class="page-title"><h1>今日事项</h1><button id="add-todo" class="small-button">＋ 待办</button></div><p id="task-count" class="muted"></p>
+<div class="section-title"><h2>待办</h2><span>保存后自动更新画面</span></div><div id="todo-list"></div>
+<details id="future-events"><summary>接下来的待办</summary><div id="future-agenda"></div></details><details id="completed-events"><summary>已完成</summary><div id="completed-todos"></div></details>
+<div class="section-title"><h2>AI 额度</h2><span id="quota-status"></span></div><div id="quota-windows" class="quota-windows"></div><p id="quota-note" class="ink-note"></p>
+</section>
+<section id="settings-page" data-view="settings" hidden>
+<h1>设置</h1><div class="section-title"><h2>待办更新</h2></div><p>在“事项”页直接添加、编辑和勾选完成。清单保存到后台，手机网页和 Kindle 画面共享这份数据。</p><p class="muted">Apple 提醒事项与日历同步暂不启用。需要显示的事项可在这里填写标题和截止时间。</p>
+<div class="section-title"><h2>天气地点</h2></div><p id="settings-city"></p><button id="use-location" class="secondary">使用当前位置</button><p id="geo-note" class="muted small"></p><form id="location-form"><label>地区名称<input id="location-name" maxlength="60" required></label><div class="input-pair"><label>纬度<input id="latitude" type="number" min="-90" max="90" step="any" required></label><label>经度<input id="longitude" type="number" min="-180" max="180" step="any" required></label></div><label>时区<input id="time-zone" required></label><button class="secondary">保存固定地区</button></form>
+<div class="section-title"><h2>显示与连接</h2></div><p>在 Safari 中选择“分享 → 添加到主屏幕”，可像 App 一样打开。添加到主屏幕需要在手机上操作。</p><div class="settings-actions"><button id="refresh" class="secondary">刷新数据</button><button id="toggle-demo" class="secondary">查看排版示例</button><a href="/">Kindle 管理页</a></div><p class="small muted">当前为本机开发服务。离开同一网络或关闭 Mac 后，实时更新会停止。</p><button id="logout" class="secondary">退出手机登录</button>
+</section>
+<nav class="bottom-nav" aria-label="工作台页面"><button data-nav="today" aria-pressed="true">今日</button><button data-nav="work" aria-pressed="false">事项</button><button data-nav="settings" aria-pressed="false">设置</button></nav>
+</div></main>
+<dialog id="todo-dialog"><form id="todo-form"><div class="dialog-head"><h2 id="todo-heading">添加待办</h2><button id="close-todo" type="button" class="secondary" aria-label="关闭">×</button></div><input id="todo-id" type="hidden"><label>事项<input id="todo-title" required maxlength="100"></label><label>截止时间<input id="todo-due" type="datetime-local"></label><label>优先级<select id="todo-priority"><option value="normal">普通</option><option value="high">优先</option></select></label><p class="small muted">填写截止时间后，会出现在相应日期的月历上。</p><button id="save-todo">保存</button></form></dialog>
+<p id="message" class="toast" role="status" aria-live="polite" hidden></p><script src="/mobile.js"></script></body></html>
